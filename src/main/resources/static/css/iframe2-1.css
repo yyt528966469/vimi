@@ -1,0 +1,109 @@
+
+html {
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust: 100%;
+}
+
+img {
+max-width: 100%;
+height: auto;
+width: auto;  ie8 
+display: inline-block;
+}
+video embed, video object, video iframe {
+width: 100%;
+height: auto;
+}
+
+
+body,p,span,ul,li,img{padding: 0; margin: 0; list-style: none;}
+
+
+
+/*布局区域*/
+.top{
+	width: 100%;
+	height: 65px;
+}
+
+	section{
+		width: 100%;
+		position: relative;
+	}
+	aside,article{
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	aside{
+		width: 250px;
+		height: 100%;
+		z-index:2;
+	}
+	article{
+		width: 100%;
+		z-index:1;
+	}
+
+
+
+/*内容区域*/
+.content{
+		margin-left:250px;
+		background-size: #f8f8f8;
+		padding:50px;
+}
+.content li{
+	height: 24px;
+	margin-bottom: 44px;
+}
+.content li span{
+	width: 150px;
+	background: red;
+	display: inline-block;
+	padding-left: 20px;
+	background: url(../images/point.png) no-repeat left center;
+}
+.content li p{
+	height: 14px;
+	font-size: 14px;
+}
+.content li strong,.content li span,.content li strong img{
+	display: inline-block;
+}
+.content li:nth-child(10),.content li:nth-child(11),.content li:nth-child(12){
+	height: 94px;
+	line-height: 94px;
+	clear: both;
+}
+.content li:nth-child(10) span,.content li:nth-child(11) span,.content li:nth-child(12) span{
+	margin-bottom: 50px;
+	float: left;
+}
+.content li:nth-child(10) strong,.content li:nth-child(11) strong,.content li:nth-child(12) strong{
+	margin-left: 20px;
+}
+
+.btn{
+	padding:0 0 90px 50%;
+	margin-left: -112px;
+}
+.btn b{
+	display: inline-block;
+	width: 224px;
+	height: 48px;
+	border-radius: 5px;
+	background-color: #2d90bb;
+	text-align: center;
+	line-height: 48px;
+	color: white;
+	cursor: pointer;
+
+}
+.content li:nth-child(3) img,.content li:nth-child(4) img,.content li:nth-child(5) img,.content li:nth-child(6) img,.content li:nth-child(7) img,.content li:nth-child(8) img,.content li:nth-child(9) img{
+	float: right;
+}
+
+
+
+

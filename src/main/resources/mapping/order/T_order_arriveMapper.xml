@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.order.T_order_arriveMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.order.T_order_arrive">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="order_id" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="arrive_time" jdbcType="TIMESTAMP" property="arrive_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_id, phone, arrive_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_arrive
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_order_arrive
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.order.T_order_arrive">
+    insert into t_order_arrive (id, order_id, phone, 
+      arrive_time)
+    values (#{id,jdbcType=VARCHAR}, #{order_id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{arrive_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.order.T_order_arrive">
+    insert into t_order_arrive
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="order_id != null">
+        order_id,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="arrive_time != null">
+        arrive_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="order_id != null">
+        #{order_id,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="arrive_time != null">
+        #{arrive_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.order.T_order_arrive">
+    update t_order_arrive
+    <set>
+      <if test="order_id != null">
+        order_id = #{order_id,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="arrive_time != null">
+        arrive_time = #{arrive_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.order.T_order_arrive">
+    update t_order_arrive
+    set order_id = #{order_id,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      arrive_time = #{arrive_time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

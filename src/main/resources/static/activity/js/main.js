@@ -1,0 +1,39 @@
+"use strict";
+$("#activityManage").on("click",function(t){
+    $(".sidebar-manage").each(function(){
+        $(this).removeClass("active")
+    }),
+    $(this).addClass("active");
+       /* $(".content").load("activit/main",function(){
+            $("#addActivity").on("click",function(t){
+                $(".content").load("activit/getView",function(){
+
+                })
+            })
+        })*/
+}),
+    $("#enrollManage").on("click",function(t){
+        $(".sidebar-manage").each(function(){
+            $(this).removeClass("active")}),
+            $(this).addClass("active");
+            /*$(".content").load("activitsign/main",function(){})*/
+    }),
+    $("#questionManage").on("click",function(t){
+        $(".sidebar-manage").each(function(){
+            $(this).removeClass("active")}),
+            $(this).addClass("active");
+        /*$(".content").load("activitsign/main",function(){})*/
+    }),
+    $("#answManage").on("click",function(t){
+        $(".sidebar-manage").each(function(){
+            $(this).removeClass("active")}),
+            $(this).addClass("active");
+        /*$(".content").load("activitsign/main",function(){})*/
+    }),
+    $("#branchManage").on("click",function(t){
+        $(".sidebar-manage").each(function(){
+            $(this).removeClass("active")}),
+            $(this).addClass("active");
+        /*$(".content").load("activitsign/main",function(){})*/
+    }),
+    $("#lotteryManage").on("click",function(t){$(".sidebar-manage").each(function(){$(this).removeClass("active")}),$(this).addClass("active"),$(".content").load("prizeactivity/main",function(){$("#addLottery").on("click",function(t){$(".content").load("addLottery.html",function(){})})})}),$("#rewardManage").on("click",function(t){$(".sidebar-manage").each(function(){$(this).removeClass("active")}),$(this).addClass("active"),$(".content").load("prize/main",function(){$("#addReward").on("click",function(t){$(".content").load("addReward.html",function(){})})})}),$("#rosterManage").on("click",function(t){$(".sidebar-manage").each(function(){$(this).removeClass("active")}),$(this).addClass("active"),$(".content").load("prizerecord/main",function(){})}),$("#adminManage").on("click",function(t){$(".sidebar-manage").each(function(){$(this).removeClass("active")}),$(this).addClass("active"),$(".content").load("sysuser/main",function(){$("#addAdmin").on("click",function(t){$(".content").load("addAdmin.html",function(){})})})});

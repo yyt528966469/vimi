@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.coupons.T_couponsMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.coupons.T_coupons">
+    <id column="coupons_id" jdbcType="VARCHAR" property="coupons_id" />
+    <result column="coupons_price" jdbcType="INTEGER" property="coupons_price" />
+    <result column="qs_je" jdbcType="INTEGER" property="qs_je" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="effective_day" jdbcType="INTEGER" property="effective_day" />
+    <result column="reserved1" jdbcType="VARCHAR" property="reserved1" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    coupons_id, coupons_price, qs_je, create_time, effective_day, reserved1
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_coupons
+    where coupons_id = #{coupons_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getCouponsList" parameterType="T_coupons" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_coupons
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_coupons
+    where coupons_id = #{coupons_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.coupons.T_coupons">
+    insert into t_coupons (coupons_id, coupons_price, qs_je, 
+      create_time, effective_day, reserved1
+      )
+    values (#{coupons_id,jdbcType=VARCHAR}, #{coupons_price,jdbcType=INTEGER}, #{qs_je,jdbcType=INTEGER}, 
+      #{create_time,jdbcType=TIMESTAMP}, #{effective_day,jdbcType=INTEGER}, #{reserved1,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.coupons.T_coupons">
+    insert into t_coupons
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="coupons_id != null">
+        coupons_id,
+      </if>
+      <if test="coupons_price != null">
+        coupons_price,
+      </if>
+      <if test="qs_je != null">
+        qs_je,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="effective_day != null">
+        effective_day,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="coupons_id != null">
+        #{coupons_id,jdbcType=VARCHAR},
+      </if>
+      <if test="coupons_price != null">
+        #{coupons_price,jdbcType=INTEGER},
+      </if>
+      <if test="qs_je != null">
+        #{qs_je,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effective_day != null">
+        #{effective_day,jdbcType=INTEGER},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.coupons.T_coupons">
+    update t_coupons
+    <set>
+      <if test="coupons_price != null">
+        coupons_price = #{coupons_price,jdbcType=INTEGER},
+      </if>
+      <if test="qs_je != null">
+        qs_je = #{qs_je,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effective_day != null">
+        effective_day = #{effective_day,jdbcType=INTEGER},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where coupons_id = #{coupons_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.coupons.T_coupons">
+    update t_coupons
+    set coupons_price = #{coupons_price,jdbcType=INTEGER},
+      qs_je = #{qs_je,jdbcType=INTEGER},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      effective_day = #{effective_day,jdbcType=INTEGER},
+      reserved1 = #{reserved1,jdbcType=VARCHAR}
+    where coupons_id = #{coupons_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

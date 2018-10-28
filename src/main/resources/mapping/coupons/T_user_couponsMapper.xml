@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.coupons.T_user_couponsMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.coupons.T_user_coupons">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="coupons_id" jdbcType="VARCHAR" property="coupons_id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="over_time" jdbcType="TIMESTAMP" property="over_time" ></result>
+    <result column="status" jdbcType="INTEGER" property="status"></result>
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="getCouponsMap" type="com.wm.edu.model.coupons.T_user_coupons">
+    <association property="t_coupons" column="coupons_id" select="getCouponsById"></association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, c_user_id, coupons_id, create_time,over_time,status
+  </sql>
+  
+  <select id="getUserCouponsList" resultMap="getCouponsMap" parameterType="T_user_coupons">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_coupons
+    <where>
+      <if test="c_user_id!=null">
+        and c_user_id=#{c_user_id}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_coupons
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getAllCouponsList" resultType="T_coupons" parameterType="String">
+    SELECT c.*,(CASE  WHEN  u.c_user_id IS NULL THEN 0 ELSE 1 END) lq_status
+ FROM t_user_coupons u RIGHT JOIN t_coupons c ON c.coupons_id=u.coupons_id AND u.c_user_id=#{c_user_id}
+  </select>
+  <select id="getOneCoupons" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_coupons
+    where c_user_id=#{c_user_id} and coupons_id=#{coupons_id} limit 1
+  </select>
+
+  <select id="getUserCouponsNum" parameterType="String" resultType="Integer">
+    select count(1)
+    from t_user_coupons where c_user_id=#{c_user_id} and status = 0
+  </select>
+  
+  <select id="getCouponsById" resultType="T_coupons" parameterType="String">
+    select *
+    from t_coupons where coupons_id=#{coupons_id}
+  </select>
+  
+  <update id="updateUserCouspons" parameterType="T_user_coupons">
+    update t_user_coupons
+    set
+      status=#{status,jdbcType=INTEGER}
+    where c_user_id = #{c_user_id,jdbcType=VARCHAR} and coupons_id = #{coupons_id,jdbcType=VARCHAR}
+
+  </update>
+
+  <select id="getMaxCoupons" resultType="T_coupons" parameterType="T_user_coupons">
+    SELECT c.* FROM  t_user_coupons u,t_coupons c
+    WHERE u.coupons_id=c.coupons_id
+    AND u.c_user_id=#{c_user_id}
+    AND u.status=0
+    AND c.qs_je &lt;=#{sum_price}
+    AND u.over_time &gt; CURDATE() ORDER BY c.qs_je DESC LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_user_coupons
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.coupons.T_user_coupons">
+    insert into t_user_coupons (id, c_user_id, coupons_id, 
+      create_time)
+    values (#{id,jdbcType=VARCHAR}, #{c_user_id,jdbcType=VARCHAR}, #{coupons_id,jdbcType=VARCHAR}, 
+      #{create_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.coupons.T_user_coupons">
+    insert into t_user_coupons
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="coupons_id != null">
+        coupons_id,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="over_time!=null">
+        over_time,
+      </if>
+      <if test="status!=null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="coupons_id != null">
+        #{coupons_id,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="over_time!=null">
+        #{over_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status!=null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.coupons.T_user_coupons">
+    update t_user_coupons
+    <set>
+      <if test="c_user_id != null">
+        c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="coupons_id != null">
+        coupons_id = #{coupons_id,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="over_time!=null">
+        over_time=#{over_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status!=null">
+        status=#{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.coupons.T_user_coupons">
+    update t_user_coupons
+    set c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      coupons_id = #{coupons_id,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      over_time=#{over_time,jdbcType=TIMESTAMP},
+      status=#{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

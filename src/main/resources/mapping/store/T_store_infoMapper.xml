@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.store.T_store_infoMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.store.T_store_info">
+    <id column="store_id" jdbcType="VARCHAR" property="store_id" />
+    <result column="store_name" jdbcType="VARCHAR" property="store_name" />
+    <result column="img_src" jdbcType="VARCHAR" property="img_src" />
+    <result column="wechat" jdbcType="VARCHAR" property="wechat" />
+    <result column="start_str" jdbcType="VARCHAR" property="start_str" />
+    <result column="end_str" jdbcType="VARCHAR" property="end_str" />
+    <result column="phone" jdbcType="VARCHAR" property="phone"></result>
+    <result column="longitude" jdbcType="REAL" property="longitude" />
+    <result column="latitude" jdbcType="REAL" property="latitude" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP"></result>
+    <result column="store_intro" jdbcType="VARCHAR" property="store_intro" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    store_id, store_name, img_src, wechat,start_str, end_str, longitude, latitude, address, province,
+    city, county, store_intro,create_time,phone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_store_info
+    where store_id = #{store_id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_store_info
+    where store_id = #{store_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.store.T_store_info">
+    insert into t_store_info (store_id, store_name, img_src, 
+      wechat, longitude,
+      latitude, address, province, 
+      city, county, store_intro,create_time,phone,start_str,end_str
+      )
+    values (#{store_id,jdbcType=VARCHAR}, #{store_name,jdbcType=VARCHAR}, #{img_src,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR},  #{longitude,jdbcType=REAL},
+      #{latitude,jdbcType=REAL}, #{address,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{store_intro,jdbcType=VARCHAR},#{create_time,jdbcType=TIMESTAMP},#{phone,jdbcType=VARCHAR},
+      #{start_str,jdbcType=VARCHAR},#{end_str,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.store.T_store_info">
+    insert into t_store_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="store_id != null">
+        store_id,
+      </if>
+      <if test="store_name != null">
+        store_name,
+      </if>
+      <if test="img_src != null">
+        img_src,
+      </if>
+      <if test="wechat != null">
+        wechat,
+      </if>
+      <if test="start_str != null">
+        start_str,
+      </if>
+      <if test="end_str != null">
+        end_str,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="county != null">
+        county,
+      </if>
+      <if test="store_intro != null">
+        store_intro,
+      </if>
+      <if test="create_time!=null">
+        create_time,
+      </if>
+      <if test="phone!=null">
+        phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="store_id != null">
+        #{store_id,jdbcType=VARCHAR},
+      </if>
+      <if test="store_name != null">
+        #{store_name,jdbcType=VARCHAR},
+      </if>
+      <if test="img_src != null">
+        #{img_src,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="start_str != null">
+        #{start_str,jdbcType=VARCHAR},
+      </if>
+      <if test="end_str != null">
+        #{end_str,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=REAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=REAL},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="store_intro != null">
+        #{store_intro,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time!=null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone!=null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.store.T_store_info">
+    update t_store_info
+    <set>
+      <if test="store_name != null">
+        store_name = #{store_name,jdbcType=VARCHAR},
+      </if>
+      <if test="img_src != null">
+        img_src = #{img_src,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="start_str != null">
+        start_str = #{start_str,jdbcType=VARCHAR},
+      </if>
+      <if test="end_str != null">
+        end_str = #{end_str,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=REAL},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=REAL},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="store_intro != null">
+        store_intro = #{store_intro,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time!=null">
+        create_time= #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone!=null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where store_id = #{store_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.store.T_store_info">
+    update t_store_info
+    set store_name = #{store_name,jdbcType=VARCHAR},
+      img_src = #{img_src,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      start_str = #{start_str,jdbcType=VARCHAR},
+      end_str = #{end_str,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=REAL},
+      latitude = #{latitude,jdbcType=REAL},
+      address = #{address,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      store_intro = #{store_intro,jdbcType=VARCHAR},
+      create_time= #{create_time,jdbcType=TIMESTAMP},
+      phone = #{phone,jdbcType=VARCHAR}
+    where store_id = #{store_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

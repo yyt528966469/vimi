@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.commodity.T_commodity_typeMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.commodity.T_commodity_type">
+    <id column="type_id" jdbcType="VARCHAR" property="type_id" />
+    <result column="type_name" jdbcType="VARCHAR" property="type_name" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    type_id, type_name, sort, create_time, img
+  </sql>
+
+  <select id="getTypeList" resultMap="BaseResultMap" parameterType="T_commodity_type">
+    select
+    <include refid="Base_Column_List" />
+    from t_commodity_type
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_commodity_type
+    where type_id = #{type_id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_commodity_type
+    where type_id = #{type_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.commodity.T_commodity_type">
+    insert into t_commodity_type (type_id, type_name, sort, 
+      create_time, img)
+    values (#{type_id,jdbcType=VARCHAR}, #{type_name,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{create_time,jdbcType=TIMESTAMP}, #{img,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.commodity.T_commodity_type">
+    insert into t_commodity_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="type_id != null">
+        type_id,
+      </if>
+      <if test="type_name != null">
+        type_name,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="type_id != null">
+        #{type_id,jdbcType=VARCHAR},
+      </if>
+      <if test="type_name != null">
+        #{type_name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.commodity.T_commodity_type">
+    update t_commodity_type
+    <set>
+      <if test="type_name != null">
+        type_name = #{type_name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where type_id = #{type_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.commodity.T_commodity_type">
+    update t_commodity_type
+    set type_name = #{type_name,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      img = #{img,jdbcType=VARCHAR}
+    where type_id = #{type_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

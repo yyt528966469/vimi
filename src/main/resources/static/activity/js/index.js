@@ -1,0 +1,1 @@
+"use strict";function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}var _a=require("./a"),_jquery=require("jquery"),_jquery2=_interopRequireDefault(_jquery);(0,_jquery2.default)(".body").css({color:"red"}),console.log(_a.a);

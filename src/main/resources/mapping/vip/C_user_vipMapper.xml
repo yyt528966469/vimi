@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.vip.C_user_vipMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.vip.C_user_vip">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="reserved1" jdbcType="VARCHAR" property="reserved1" />
+    <result column="balance" jdbcType="REAL" property="balance"></result>
+    <result column="integral" jdbcType="INTEGER" property="integral"></result>
+    <result column="discount" jdbcType="REAL" property="discount"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, phone, create_time, c_user_id, reserved1,balance,integral,discount
+  </sql>
+
+  <select id="getVipList" resultMap="BaseResultMap" parameterType="C_user_vip">
+    select
+    <include refid="Base_Column_List" />
+    from c_user_vip
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from c_user_vip
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="getVipByUserId" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from c_user_vip
+    where c_user_id=#{c_user_id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from c_user_vip
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.vip.C_user_vip">
+    insert into c_user_vip (id, name, phone, 
+      create_time, c_user_id, reserved1
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{create_time,jdbcType=TIMESTAMP}, #{c_user_id,jdbcType=VARCHAR}, #{reserved1,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.vip.C_user_vip">
+    insert into c_user_vip
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+      <if test="balance!=null">
+        balance,
+      </if>
+      <if test="discount!=null">
+        discount,
+      </if>
+      <if test="integral!=null">
+        integral,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="balance!=null">
+        #{balance,jdbcType=REAL},
+      </if>
+      <if test="discount!=null">
+        #{discount,jdbcType=REAL},
+      </if>
+      <if test="integral!=null">
+        #{integral,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.vip.C_user_vip">
+    update c_user_vip
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="c_user_id != null">
+        c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="balance!=null">
+        balance=#{balance,jdbcType=REAL},
+      </if>
+      <if test="discount!=null">
+        discount=#{discount,jdbcType=REAL},
+      </if>
+      <if test="integral!=null">
+        integral= #{integral,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.vip.C_user_vip">
+    update c_user_vip
+    set name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      balance=#{balance,jdbcType=REAL},
+      reserved1 = #{reserved1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

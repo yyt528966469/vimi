@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.cuser.C_user_infoMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.cuser.C_user_info">
+    <id column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="open_id" jdbcType="VARCHAR" property="open_id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="reserved1" jdbcType="VARCHAR" property="reserved1" />
+    <result column="user_name" jdbcType="VARCHAR" property="user_name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    c_user_id, open_id, create_time, reserved1, user_name,sex
+  </sql>
+  
+  <select id="getUserList" resultMap="BaseResultMap" parameterType="C_user_info">
+    select
+    <include refid="Base_Column_List" />
+    from c_user_info
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from c_user_info
+    where c_user_id = #{c_user_id,jdbcType=VARCHAR}
+  </select>
+  <select id="getUserByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from c_user_info
+    where open_id = #{openid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from c_user_info
+    where c_user_id = #{c_user_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.cuser.C_user_info">
+    insert into c_user_info (c_user_id, open_id, create_time, 
+      reserved1, user_name)
+    values (#{c_user_id,jdbcType=VARCHAR}, #{open_id,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP},
+      #{reserved1,jdbcType=VARCHAR}, #{user_name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.cuser.C_user_info">
+    insert into c_user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="open_id != null">
+        open_id,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+      <if test="user_name != null">
+        user_name,
+      </if>
+      <if test="sex!=null">
+        sex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="open_id != null">
+        #{open_id,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="user_name != null">
+        #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex!=null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.cuser.C_user_info">
+    update c_user_info
+    <set>
+      <if test="open_id != null">
+        open_id = #{open_id,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="user_name != null">
+        user_name = #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex!=null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where c_user_id = #{c_user_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.cuser.C_user_info">
+    update c_user_info
+    set open_id = #{open_id,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      reserved1 = #{reserved1,jdbcType=VARCHAR},
+      user_name = #{user_name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR}
+    where c_user_id = #{c_user_id,jdbcType=VARCHAR}
+  </update>
+  <select id="getAllUserNum" resultType="Integer">
+    SELECT COUNT(1) FROM c_user_info
+  </select>
+  
+
+  <insert id="addEx" parameterType="java.util.List">
+    insert into express (id, name)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id}, #{item.name})
+    </foreach>
+  </insert>
+</mapper>

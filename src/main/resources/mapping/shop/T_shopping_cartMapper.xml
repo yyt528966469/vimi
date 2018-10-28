@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.shop.T_shopping_cartMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.shop.T_shopping_cart">
+    <id column="cart_id" jdbcType="VARCHAR" property="cart_id" />
+    <result column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="commodity_id" jdbcType="VARCHAR" property="commodity_id" />
+    <result column="comm_num" jdbcType="INTEGER" property="comm_num" />
+    <result column="sum_price" jdbcType="REAL" property="sum_price" />
+    <result column="commodity_name" jdbcType="VARCHAR" property="commodity_name" />
+    <result column="commodity_price" jdbcType="REAL" property="commodity_price" />
+    <result column="img_src" jdbcType="VARCHAR" property="img_src"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    cart_id, c_user_id, commodity_id, comm_num, sum_price, commodity_name, commodity_price,img_src
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shopping_cart
+    where cart_id = #{cart_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getCartByUserIdAndCommId" parameterType="T_shopping_cart" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_shopping_cart
+    where c_user_id = #{c_user_id,jdbcType=VARCHAR}
+    and commodity_id = #{commodity_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getCartList" parameterType="T_shopping_cart" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_shopping_cart
+    <where>
+      <if test="c_user_id!=null">
+        and c_user_id = #{c_user_id,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_shopping_cart
+    where cart_id = #{cart_id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteCartByUserId" parameterType="java.lang.String">
+    delete from t_shopping_cart
+    where c_user_id = #{c_user_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.shop.T_shopping_cart">
+    insert into t_shopping_cart (cart_id, c_user_id, commodity_id, 
+      comm_num, sum_price, commodity_name, 
+      commodity_price,img_src)
+    values (#{cart_id,jdbcType=VARCHAR}, #{c_user_id,jdbcType=VARCHAR}, #{commodity_id,jdbcType=VARCHAR}, 
+      #{comm_num,jdbcType=INTEGER}, #{sum_price,jdbcType=REAL}, #{commodity_name,jdbcType=VARCHAR}, 
+      #{commodity_price,jdbcType=REAL},#{img_src,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.shop.T_shopping_cart">
+    insert into t_shopping_cart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cart_id != null">
+        cart_id,
+      </if>
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="commodity_id != null">
+        commodity_id,
+      </if>
+      <if test="comm_num != null">
+        comm_num,
+      </if>
+      <if test="sum_price != null">
+        sum_price,
+      </if>
+      <if test="commodity_name != null">
+        commodity_name,
+      </if>
+      <if test="commodity_price != null">
+        commodity_price,
+      </if>
+      <if test="img_src!=null">
+        img_src,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cart_id != null">
+        #{cart_id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="commodity_id != null">
+        #{commodity_id,jdbcType=VARCHAR},
+      </if>
+      <if test="comm_num != null">
+        #{comm_num,jdbcType=INTEGER},
+      </if>
+      <if test="sum_price != null">
+        #{sum_price,jdbcType=REAL},
+      </if>
+      <if test="commodity_name != null">
+        #{commodity_name,jdbcType=VARCHAR},
+      </if>
+      <if test="commodity_price != null">
+        #{commodity_price,jdbcType=REAL},
+      </if>
+      <if test="img_src!=null">
+        #{img_src,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.shop.T_shopping_cart">
+    update t_shopping_cart
+    <set>
+      <if test="c_user_id != null">
+        c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="commodity_id != null">
+        commodity_id = #{commodity_id,jdbcType=VARCHAR},
+      </if>
+      <if test="comm_num != null">
+        comm_num = #{comm_num,jdbcType=INTEGER},
+      </if>
+      <if test="sum_price != null">
+        sum_price = #{sum_price,jdbcType=REAL},
+      </if>
+      <if test="commodity_name != null">
+        commodity_name = #{commodity_name,jdbcType=VARCHAR},
+      </if>
+      <if test="commodity_price != null">
+        commodity_price = #{commodity_price,jdbcType=REAL},
+      </if>
+      <if test="img_src!=null">
+        img_src = #{img_src,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cart_id = #{cart_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.shop.T_shopping_cart">
+    update t_shopping_cart
+    set c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      commodity_id = #{commodity_id,jdbcType=VARCHAR},
+      comm_num = #{comm_num,jdbcType=INTEGER},
+      sum_price = #{sum_price,jdbcType=REAL},
+      commodity_name = #{commodity_name,jdbcType=VARCHAR},
+      commodity_price = #{commodity_price,jdbcType=REAL},
+      img_src = #{img_src,jdbcType=VARCHAR}
+    where cart_id = #{cart_id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getUserCartSum" resultType="T_cart_info" parameterType="String">
+    SELECT SUM(comm_num) c_shop_sum,SUM(sum_price) c_price_sum FROM t_shopping_cart WHERE c_user_id=#{c_user_id}
+  </select>
+</mapper>

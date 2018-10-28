@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.order.T_order_scavengingMapper">
+    <resultMap id="BaseResultMap" type="com.wm.edu.model.order.T_order_scavenging">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="order_id" jdbcType="VARCHAR" property="order_id" />
+        <result column="table_num" jdbcType="INTEGER" property="table_num" />
+        <result column="person_num" jdbcType="INTEGER" property="person_num" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, order_id, table_num, person_num
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_order_scavenging
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.wm.edu.model.order.T_order_scavenging">
+        insert into t_order_scavenging
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="order_id != null">
+                order_id,
+            </if>
+            <if test="table_num != null">
+                table_num,
+            </if>
+            <if test="person_num != null">
+                person_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="order_id != null">
+                #{order_id,jdbcType=VARCHAR},
+            </if>
+            <if test="table_num != null">
+                #{table_num,jdbcType=INTEGER},
+            </if>
+            <if test="person_num != null">
+                #{person_num,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

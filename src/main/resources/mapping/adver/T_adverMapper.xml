@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.adver.T_adverMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.adver.T_adver">
+    <id column="adver_id" jdbcType="VARCHAR" property="adver_id" />
+    <result column="adver_img" jdbcType="VARCHAR" property="adver_img" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="adver_name" jdbcType="VARCHAR" property="adver_name" />
+    <result column="adver_url" jdbcType="VARCHAR" property="adver_url" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    adver_id, adver_img, sort, status, create_time, adver_name, adver_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_adver
+    where adver_id = #{adver_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAdverList" resultMap="BaseResultMap" parameterType="T_adver">
+    select
+    <include refid="Base_Column_List" />
+    from t_adver
+    <where>
+      <if test="status!=null">
+        and  status=#{status}
+      </if>
+    </where>
+    order by sort
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_adver
+    where adver_id = #{adver_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.adver.T_adver">
+    insert into t_adver (adver_id, adver_img, sort, 
+      status, create_time, adver_name, 
+      adver_url)
+    values (#{adver_id,jdbcType=VARCHAR}, #{adver_img,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{create_time,jdbcType=TIMESTAMP}, #{adver_name,jdbcType=VARCHAR}, 
+      #{adver_url,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.adver.T_adver">
+    insert into t_adver
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adver_id != null">
+        adver_id,
+      </if>
+      <if test="adver_img != null">
+        adver_img,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="adver_name != null">
+        adver_name,
+      </if>
+      <if test="adver_url != null">
+        adver_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adver_id != null">
+        #{adver_id,jdbcType=VARCHAR},
+      </if>
+      <if test="adver_img != null">
+        #{adver_img,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adver_name != null">
+        #{adver_name,jdbcType=VARCHAR},
+      </if>
+      <if test="adver_url != null">
+        #{adver_url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.adver.T_adver">
+    update t_adver
+    <set>
+      <if test="adver_img != null">
+        adver_img = #{adver_img,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adver_name != null">
+        adver_name = #{adver_name,jdbcType=VARCHAR},
+      </if>
+      <if test="adver_url != null">
+        adver_url = #{adver_url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where adver_id = #{adver_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.adver.T_adver">
+    update t_adver
+    set adver_img = #{adver_img,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      adver_name = #{adver_name,jdbcType=VARCHAR},
+      adver_url = #{adver_url,jdbcType=VARCHAR}
+    where adver_id = #{adver_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

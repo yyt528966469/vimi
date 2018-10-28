@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.reserve.T_reserveMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.reserve.T_reserve">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="person_num" jdbcType="INTEGER" property="person_num" />
+    <result column="reserve_time" jdbcType="TIMESTAMP" property="reserve_time" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="reason" jdbcType="VARCHAR" property="reason"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, c_user_id, person_num, reserve_time, position, create_time, status, name, phone, 
+    sex, remarks,reason
+  </sql>
+
+  <select id="getReserveList" parameterType="T_reserve" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_reserve
+    <where>
+      <if test="status!=null">
+        and status=#{status}
+      </if>
+      <if test="id!=null">
+        and id like  CONCAT('%',#{id},'%')
+      </if>
+      <if test="c_user_id!=null">
+        and c_user_id = #{c_user_id}
+      </if>
+    </where>
+  </select>
+  <!--用户近30天的预约单-->
+  <select id="getUserReserveList" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_reserve where  c_user_id = #{c_user_id}
+    and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= DATE(create_time) order by create_time desc
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_reserve
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_reserve
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.reserve.T_reserve">
+    insert into t_reserve (id, c_user_id, person_num, 
+      reserve_time, position, create_time, 
+      status, name, phone, 
+      sex, remarks,reason)
+    values (#{id,jdbcType=VARCHAR}, #{c_user_id,jdbcType=VARCHAR}, #{person_num,jdbcType=INTEGER}, 
+      #{reserve_time,jdbcType=TIMESTAMP}, #{position,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.reserve.T_reserve">
+    insert into t_reserve
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="person_num != null">
+        person_num,
+      </if>
+      <if test="reserve_time != null">
+        reserve_time,
+      </if>
+      <if test="position != null">
+        position,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="person_num != null">
+        #{person_num,jdbcType=INTEGER},
+      </if>
+      <if test="reserve_time != null">
+        #{reserve_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.reserve.T_reserve">
+    update t_reserve
+    <set>
+      <if test="c_user_id != null">
+        c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="person_num != null">
+        person_num = #{person_num,jdbcType=INTEGER},
+      </if>
+      <if test="reserve_time != null">
+        reserve_time = #{reserve_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null">
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        reason=#{reason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.reserve.T_reserve">
+    update t_reserve
+    set c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      person_num = #{person_num,jdbcType=INTEGER},
+      reserve_time = #{reserve_time,jdbcType=TIMESTAMP},
+      position = #{position,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      reason=#{reason,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

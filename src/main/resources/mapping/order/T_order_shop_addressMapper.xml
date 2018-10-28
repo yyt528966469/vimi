@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.order.T_order_shop_addressMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.order.T_order_shop_address">
+    <id column="order_address_id" jdbcType="VARCHAR" property="order_address_id" />
+    <result column="order_id" jdbcType="VARCHAR" property="order_id" />
+    <result column="address_id" jdbcType="VARCHAR" property="address_id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="details_addr" jdbcType="VARCHAR" property="details_addr" />
+    <result column="reserved1" jdbcType="VARCHAR" property="reserved1" />
+    <result column="postage" jdbcType="REAL" property="postage" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_address_id, order_id, address_id, name, phone, province, city, county, details_addr, 
+    reserved1, postage
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_shop_address
+    where order_address_id = #{order_address_id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_order_shop_address
+    where order_address_id = #{order_address_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.order.T_order_shop_address">
+    insert into t_order_shop_address (order_address_id, order_id, address_id, 
+      name, phone, province, 
+      city, county, details_addr, 
+      reserved1, postage)
+    values (#{order_address_id,jdbcType=VARCHAR}, #{order_id,jdbcType=VARCHAR}, #{address_id,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{details_addr,jdbcType=VARCHAR}, 
+      #{reserved1,jdbcType=VARCHAR}, #{postage,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.order.T_order_shop_address">
+    insert into t_order_shop_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="order_address_id != null">
+        order_address_id,
+      </if>
+      <if test="order_id != null">
+        order_id,
+      </if>
+      <if test="address_id != null">
+        address_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="county != null">
+        county,
+      </if>
+      <if test="details_addr != null">
+        details_addr,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+      <if test="postage != null">
+        postage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="order_address_id != null">
+        #{order_address_id,jdbcType=VARCHAR},
+      </if>
+      <if test="order_id != null">
+        #{order_id,jdbcType=VARCHAR},
+      </if>
+      <if test="address_id != null">
+        #{address_id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="details_addr != null">
+        #{details_addr,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="postage != null">
+        #{postage,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.order.T_order_shop_address">
+    update t_order_shop_address
+    <set>
+      <if test="order_id != null">
+        order_id = #{order_id,jdbcType=VARCHAR},
+      </if>
+      <if test="address_id != null">
+        address_id = #{address_id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="details_addr != null">
+        details_addr = #{details_addr,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="postage != null">
+        postage = #{postage,jdbcType=REAL},
+      </if>
+    </set>
+    where order_address_id = #{order_address_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.order.T_order_shop_address">
+    update t_order_shop_address
+    set order_id = #{order_id,jdbcType=VARCHAR},
+      address_id = #{address_id,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      details_addr = #{details_addr,jdbcType=VARCHAR},
+      reserved1 = #{reserved1,jdbcType=VARCHAR},
+      postage = #{postage,jdbcType=REAL}
+    where order_address_id = #{order_address_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

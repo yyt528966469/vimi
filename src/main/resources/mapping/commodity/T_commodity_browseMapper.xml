@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.commodity.T_commodity_browseMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.commodity.T_commodity_browse">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="commodity_id" jdbcType="VARCHAR" property="commodity_id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, c_user_id, commodity_id, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_commodity_browse
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getBrowseByCommIdAndUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_commodity_browse
+    where commodity_id=#{commodity_id} and c_user_id=#{c_user_id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_commodity_browse
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.commodity.T_commodity_browse">
+    insert into t_commodity_browse (id, c_user_id, commodity_id, 
+      create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{c_user_id,jdbcType=VARCHAR}, #{commodity_id,jdbcType=VARCHAR}, 
+      #{create_time,jdbcType=TIMESTAMP}, #{update_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.commodity.T_commodity_browse">
+    insert into t_commodity_browse
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="commodity_id != null">
+        commodity_id,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="update_time != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="commodity_id != null">
+        #{commodity_id,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.commodity.T_commodity_browse">
+    update t_commodity_browse
+    <set>
+      <if test="c_user_id != null">
+        c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="commodity_id != null">
+        commodity_id = #{commodity_id,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.commodity.T_commodity_browse">
+    update t_commodity_browse
+    set c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      commodity_id = #{commodity_id,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      update_time = #{update_time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

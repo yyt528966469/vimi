@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.security.SysResourcesMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.security.SysResources">
+    <id column="res_id" jdbcType="INTEGER" property="res_id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="INTEGER" property="parent_id" />
+    <result column="res_type" jdbcType="INTEGER" property="res_type" />
+    <result column="res_url" jdbcType="VARCHAR" property="res_url" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <!--<collection property="childrens" column="res_id" select=""/>-->
+    <association property="parentResources" column="parent_id" select="selectByPrimaryKey"/>
+    <collection property="children" column="res_id" select="getChildren"></collection>
+  </resultMap>
+
+
+  <resultMap id="ResMap" type="com.wm.edu.model.security.SysResources">
+    <id column="res_id" jdbcType="INTEGER" property="res_id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="INTEGER" property="parent_id" />
+    <result column="res_type" jdbcType="INTEGER" property="res_type" />
+    <result column="res_url" jdbcType="VARCHAR" property="res_url" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="res_name" jdbcType="VARCHAR" property="res_name" />
+    <!--<collection property="childrens" column="res_id" select=""/>-->
+   <!-- <association property="parentResources" column="parent_id" select="selectByPrimaryKey"/>-->
+  </resultMap>
+  <sql id="Base_Column_List">
+    res_id, name, parent_id, res_type, res_url, img, res_name
+  </sql>
+
+<select id="findAll" resultMap="BaseResultMap">
+  select * from sys_resources where res_type &gt; 1
+</select>
+
+  <select id="getChildren" parameterType="Integer" resultMap="BaseResultMap">
+    select *
+    from sys_resources
+    where parent_id=#{res_id}
+  </select>
+  
+  <select id="findByAdminUserId" resultMap="BaseResultMap" parameterType="Integer">
+          SELECT res.* FROM sys_user u
+            LEFT JOIN sys_role_user sru ON sru.sys_user_id=u.user_id
+            LEFT JOIN sys_role sr ON sr.id=sru.sys_role_id
+            LEFT JOIN sys_role_res srr ON srr.role_id = sr.id
+            LEFT JOIN sys_resources res ON res.res_id=srr.res_id
+            WHERE res.res_id IS NOT NULL AND u.user_id=#{user_id}
+  </select>
+
+  <select id="getButtonResByUser" parameterType="Integer"  resultMap="ResMap">
+    SELECT res.* FROM sys_user u
+            LEFT JOIN sys_role_user sru ON sru.sys_user_id=u.user_id
+            LEFT JOIN sys_role sr ON sr.id=sru.sys_role_id
+            LEFT JOIN sys_role_res srr ON srr.role_id = sr.id
+            LEFT JOIN sys_resources res ON res.res_id=srr.res_id
+            WHERE res.res_id IS NOT NULL AND u.user_id=#{user_id} AND res.res_type>1
+  </select>
+
+  <select id="getParByUserId" resultMap="BaseResultMap" parameterType="Integer">
+          SELECT res.* FROM sys_user u
+            LEFT JOIN sys_role_user sru ON sru.sys_user_id=u.user_id
+            LEFT JOIN sys_role sr ON sr.id=sru.sys_role_id
+            LEFT JOIN sys_role_res srr ON srr.role_id = sr.id
+            LEFT JOIN sys_resources res ON res.res_id=srr.res_id
+            WHERE res.res_id IS NOT NULL AND u.user_id=#{user_id} and parent_id=0 and res_type=0
+  </select>
+  
+  <select id="getResListByBean" resultMap="BaseResultMap" parameterType="SysResources">
+    select * from sys_resources
+    <where>
+      <if test="parent_id!=null">
+        and parent_id = #{parent_id}
+      </if>
+    </where>
+  </select>
+
+  <select id="getResList" parameterType="SysResources" resultMap="ResMap">
+    SELECT sr.*,res.name par_name FROM sys_resources sr LEFT JOIN sys_resources res
+    ON  sr.parent_id=res.res_id
+    <where>
+       and sr.res_type &lt;&gt; 2
+      <if test="res_type!=null">
+        and sr.res_type = #{res_type}
+      </if>
+      <if test="parent_id!=null">
+        and sr.parent_id = #{parent_id}
+      </if>
+    </where>
+    order by sr.res_id
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resources
+    where res_id = #{res_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_resources
+    where res_id = #{res_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.security.SysResources">
+    insert into sys_resources (res_id, name, parent_id, 
+      res_type, res_url, img, res_name
+      )
+    values (#{res_id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{parent_id,jdbcType=INTEGER}, 
+      #{res_type,jdbcType=INTEGER}, #{res_url,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{res_name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.security.SysResources">
+    insert into sys_resources
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="res_id != null">
+        res_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="parent_id != null">
+        parent_id,
+      </if>
+      <if test="res_type != null">
+        res_type,
+      </if>
+      <if test="res_url != null">
+        res_url,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="res_name != null">
+        res_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="res_id != null">
+        #{res_id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent_id != null">
+        #{parent_id,jdbcType=INTEGER},
+      </if>
+      <if test="res_type != null">
+        #{res_type,jdbcType=INTEGER},
+      </if>
+      <if test="res_url != null">
+        #{res_url,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+      #{img,jdbcType=VARCHAR},
+    </if>
+      <if test="res_name != null">
+        #{res_name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.security.SysResources">
+    update sys_resources
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent_id != null">
+        parent_id = #{parent_id,jdbcType=INTEGER},
+      </if>
+      <if test="res_type != null">
+        res_type = #{res_type,jdbcType=INTEGER},
+      </if>
+      <if test="res_url != null">
+        res_url = #{res_url,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="res_name != null">
+        res_name = #{res_name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where res_id = #{res_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.security.SysResources">
+    update sys_resources
+    set name = #{name,jdbcType=VARCHAR},
+      parent_id = #{parent_id,jdbcType=INTEGER},
+      res_type = #{res_type,jdbcType=INTEGER},
+      res_url = #{res_url,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      res_name = #{res_name,jdbcType=VARCHAR}
+    where res_id = #{res_id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getInfoByMap" resultMap="ResMap" parameterType="java.util.Map">
+    select * from sys_resources
+    where 1=1
+    <if test="res_name!=null">
+    and res_name=#{res_name}
+  </if>
+    <if test="res_url!=null">
+      and res_url=#{res_url}
+    </if>
+
+  </select>
+</mapper>

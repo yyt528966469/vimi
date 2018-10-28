@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.order.T_orderMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.order.T_order">
+    <result column="order_id" jdbcType="VARCHAR" property="order_id" />
+    <result column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="pay_price" jdbcType="REAL" property="pay_price" />
+    <result column="real_price" jdbcType="REAL" property="real_price" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="order_time" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="pay_time" />
+    <result column="pay_type" jdbcType="INTEGER" property="pay_type" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="eat_type" jdbcType="INTEGER" property="eat_type" />
+   <!-- <result column="table_num" jdbcType="INTEGER" property="table_num" />
+    <result column="person_num" jdbcType="INTEGER" property="person_num" />-->
+    <result column="over_time" jdbcType="TIMESTAMP" property="over_time" />
+    <result column="reserved1" jdbcType="VARCHAR" property="reserved1" />
+    <result column="reserved2" jdbcType="VARCHAR" property="reserved2" />
+    <result column="reserved3" jdbcType="VARCHAR" property="reserved3" />
+    <result column="store_id" property="store_id" jdbcType="VARCHAR"></result>
+    <result column="remarks"  property="remarks" jdbcType="VARCHAR"></result>
+    <result column="coupons_id" property="coupons_id" jdbcType="VARCHAR"></result>
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="BaseResultMapList" type="T_order">
+    <association property="t_order_address" column="order_id" select="getAddressByOrderId"></association>
+    <association property="t_order_arrive" column="order_id" select="getArriveByOrderId"></association>
+    <association property="t_order_scavenging" column="order_id" select="getScavengByOrderId"></association>
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="BaseResultShopOrderList" type="T_order">
+    <association property="t_order_shop_address" column="order_id" select="getShopAddressByOrderId"></association>
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="BaseResultMapOne" type="T_order">
+  <association property="t_order_address" column="order_id" select="getAddressByOrderId"></association>
+    <association property="t_order_arrive" column="order_id" select="getArriveByOrderId"></association>
+    <association property="t_order_scavenging" column="order_id" select="getScavengByOrderId"></association>
+    <collection property="commodity_infoList" column="order_id" select="getOrderCommodityInfo"></collection>
+
+</resultMap>
+
+  <resultMap extends="BaseResultMap" id="BaseResultShopOne" type="T_order">
+    <association property="t_order_shop_address" column="order_id" select="getShopAddressByOrderId"></association>
+
+    <collection property="commodity_infoList" column="order_id" select="getOrderCommodityInfo"></collection>
+
+  </resultMap>
+
+  <select id="getOrderList" parameterType="T_order" resultMap="BaseResultMapList">
+    select * from t_order
+    <where>
+      <if test="status!=null">
+        and status=#{status}
+      </if>
+      <if test="eat_type!=null">
+        and eat_type=#{eat_type}
+      </if>
+      <if test="order_id!=null">
+        and order_id like  CONCAT('%',#{order_id},'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="getShopOrderList" parameterType="T_order" resultMap="BaseResultShopOrderList">
+    select * from t_order
+    <where>
+      <if test="status!=null">
+        and status=#{status}
+      </if>
+      <if test="eat_type!=null">
+        and eat_type=#{eat_type}
+      </if>
+      <if test="order_id!=null">
+        and order_id like  CONCAT('%',#{order_id},'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="getShopAddressByOrderId" parameterType="String" resultType="T_order_shop_address">
+    select * from t_order_shop_address where order_id=#{order_id}
+  </select>
+
+  <select id="getOrdermin" parameterType="String" resultMap="BaseResultMap">
+      select * from t_order where order_id=#{order_id}
+  </select>
+  
+  <select id="getUserOrderList" parameterType="T_order" resultMap="BaseResultMapOne">
+    select * from t_order 
+    <where>
+      <if test="c_user_id!=null">
+        and c_user_id=#{c_user_id}
+      </if>
+      <if test="status!=null">
+        and status=#{status}
+      </if>
+    </where>
+
+  </select>
+  
+  <select id="getWeekOrderNum" resultType="OrderReport">
+    SELECT COUNT(1) order_num,SUM(real_price) price_sum FROM t_order WHERE (TO_DAYS(NOW()) - TO_DAYS(`pay_time`)) &lt;= 6 AND (TO_DAYS(NOW()) - TO_DAYS(`pay_time`))&gt;5
+    UNION ALL
+    SELECT COUNT(1) order_num,SUM(real_price) price_sum FROM t_order WHERE (TO_DAYS(NOW()) - TO_DAYS(`pay_time`)) &lt;= 5 AND (TO_DAYS(NOW()) - TO_DAYS(`pay_time`))&gt;4
+    UNION ALL
+    SELECT COUNT(1) order_num,SUM(real_price) price_sum FROM t_order WHERE (TO_DAYS(NOW()) - TO_DAYS(`pay_time`)) &lt;= 4 AND (TO_DAYS(NOW()) - TO_DAYS(`pay_time`))&gt;3 AND STATUS &lt; 7 AND STATUS &gt; 0
+    UNION ALL
+    SELECT COUNT(1) order_num,SUM(real_price) price_sum FROM t_order WHERE (TO_DAYS(NOW()) - TO_DAYS(`pay_time`)) &lt;= 3 AND (TO_DAYS(NOW()) - TO_DAYS(`pay_time`))&gt;2 AND STATUS &lt; 7 AND STATUS &gt; 0
+    UNION ALL
+    SELECT COUNT(1) order_num,SUM(real_price) price_sum FROM t_order WHERE (TO_DAYS(NOW()) - TO_DAYS(`pay_time`)) &lt;= 2 AND (TO_DAYS(NOW()) - TO_DAYS(`pay_time`))&gt;1 AND STATUS &lt; 7 AND STATUS &gt; 0
+    UNION ALL
+    SELECT COUNT(1) order_num,SUM(real_price) price_sum FROM t_order WHERE (TO_DAYS(NOW()) - TO_DAYS(`pay_time`)) &lt;= 1 AND (TO_DAYS(NOW()) - TO_DAYS(`pay_time`))&gt;0 AND STATUS &lt; 7 AND STATUS &gt; 0
+    UNION ALL
+    SELECT COUNT(1) order_num,SUM(real_price) price_sum FROM t_order WHERE TO_DAYS(`pay_time`) = TO_DAYS(NOW()) AND STATUS &lt; 7 AND STATUS &gt; 0
+  </select>
+
+  <select id="getAddressByOrderId" parameterType="String" resultType="T_order_address">
+      select * from t_order_address where order_id=#{order_id}
+  </select>
+<select id="getArriveByOrderId" parameterType="String" resultType="T_order_arrive">
+  select * from t_order_arrive where order_id=#{order_id}
+</select>
+
+  <select id="getScavengByOrderId" parameterType="String" resultType="T_order_scavenging">
+  select * from t_order_scavenging where order_id=#{order_id}
+</select>
+  <select id="getOrderCommodityInfo"  parameterType="String" resultType="T_order_commodity">
+      SELECT * FROM t_order_commodity WHERE  order_id=#{order_id}
+  </select>
+
+  <select id="getOrderById" parameterType="String" resultMap="BaseResultMapOne">
+    select * from t_order where order_id=#{order_id}
+  </select>
+
+  <select id="getShopOrderById" parameterType="String" resultMap="BaseResultShopOne">
+    select * from t_order where order_id=#{order_id}
+  </select>
+  <insert id="insert" parameterType="com.wm.edu.model.order.T_order">
+    insert into t_order (order_id, c_user_id, pay_price, 
+      real_price, order_time, pay_time, 
+      pay_type, status, eat_type, 
+       over_time,
+      reserved1, reserved2, reserved3,store_id,remarks,coupons_id
+      )
+    values (#{order_id,jdbcType=VARCHAR}, #{c_user_id,jdbcType=VARCHAR}, #{pay_price,jdbcType=REAL}, 
+      #{real_price,jdbcType=REAL}, #{order_time,jdbcType=TIMESTAMP}, #{pay_time,jdbcType=TIMESTAMP}, 
+      #{pay_type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{eat_type,jdbcType=INTEGER}, 
+       #{over_time,jdbcType=TIMESTAMP},
+      #{reserved1,jdbcType=VARCHAR}, #{reserved2,jdbcType=VARCHAR}, #{reserved3,jdbcType=VARCHAR},
+      #{store_id,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{coupons_id,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.order.T_order">
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="order_id != null">
+        order_id,
+      </if>
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="pay_price != null">
+        pay_price,
+      </if>
+      <if test="real_price != null">
+        real_price,
+      </if>
+      <if test="order_time != null">
+        order_time,
+      </if>
+      <if test="pay_time != null">
+        pay_time,
+      </if>
+      <if test="pay_type != null">
+        pay_type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="eat_type != null">
+        eat_type,
+      </if>
+
+      <if test="over_time != null">
+        over_time,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+      <if test="reserved2 != null">
+        reserved2,
+      </if>
+      <if test="reserved3 != null">
+        reserved3,
+      </if>
+      <if test="store_id!=null">
+        store_id,
+      </if>
+      <if test="remarks!=null">
+        remarks,
+      </if>
+      <if test="coupons_id!=null">
+        coupons_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="order_id != null">
+        #{order_id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="pay_price != null">
+        #{pay_price,jdbcType=REAL},
+      </if>
+      <if test="real_price != null">
+        #{real_price,jdbcType=REAL},
+      </if>
+      <if test="order_time != null">
+        #{order_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pay_time != null">
+        #{pay_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pay_type != null">
+        #{pay_type,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="eat_type != null">
+        #{eat_type,jdbcType=INTEGER},
+      </if>
+
+      <if test="over_time != null">
+        #{over_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null">
+        #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved3 != null">
+        #{reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="store_id!=null">
+        #{store_id,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks!=null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="coupons_id!=null">
+        #{coupons_id,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateSelectiveById" parameterType="com.wm.edu.model.order.T_order">
+    update t_order
+    <set>
+    <if test="c_user_id != null">
+      c_user_id = #{c_user_id,jdbcType=VARCHAR},
+    </if>
+      <if test="pay_price != null">
+        pay_price = #{pay_price,jdbcType=REAL},
+      </if>
+      <if test="real_price != null">
+        real_price = #{real_price,jdbcType=REAL},
+      </if>
+      <if test="order_time != null">
+        order_time=#{order_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pay_time != null">
+        pay_time= #{pay_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pay_type != null">
+        pay_type= #{pay_type,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="eat_type != null">
+        eat_type = #{eat_type,jdbcType=INTEGER},
+      </if>
+
+      <if test="over_time != null">
+        over_time = #{over_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null">
+        reserved2 = #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved3 != null">
+        reserved3 = #{reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="coupons_id!=null">
+        coupons_id=#{coupons_id,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{order_id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getToDayOrderNum" resultType="Integer">
+    SELECT COUNT(1) FROM t_order WHERE STATUS  &gt; 0 AND STATUS &lt; 7 AND order_time &gt; CURDATE()
+  </select>
+
+  <select id="getAllExpress" resultType="Express">
+      SELECT * FROM express
+  </select>
+</mapper>
